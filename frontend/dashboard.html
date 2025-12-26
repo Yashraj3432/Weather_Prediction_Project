@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Prediction Dashboard</h1>
+        <div class="form-group">
+            <label>Temperature (°C)</label>
+            <input type="number" id="temp" placeholder="Enter temperature">
+        </div>
+        <div class="form-group">
+            <label>Humidity (%)</label>
+            <input type="number" id="humidity" placeholder="Enter humidity">
+        </div>
+        <div class="form-group">
+            <label>Wind (km/h)</label>
+            <input type="number" id="wind" placeholder="Enter wind speed">
+        </div>
+        <button onclick="predictWeather()">Predict</button>
+        <h2 id="result"></h2>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
