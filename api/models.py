@@ -12,10 +12,8 @@ class User(Base):
 class Prediction(Base):
     __tablename__ = "predictions"
 
-    id = Column(Integer, primary_key=True)
-    username = Column(String)
+    id = Column(Integer, primary_key=True, index=True)
     temp = Column(Float)
     humidity = Column(Float)
     wind = Column(Float)
     result = Column(Float)
-    timestamp = Column(DateTime, default=datetime.utcnow)

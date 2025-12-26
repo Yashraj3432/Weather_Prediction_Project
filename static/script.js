@@ -43,8 +43,11 @@ async function login() {
             return;
         }
 
-        // Redirect to dashboard on successful login
+        localStorage.setItem("username", username);
+
         window.location.href = "/dashboard";
+        // Redirect to dashboard on successful login
+        
     } catch (err) {
         console.error("Login error:", err);
         alert("Server error. Please try again later.");
@@ -61,34 +64,31 @@ window.login = login;
 const username = localStorage.getItem('username');
 
 async function predictWeather() {
-    const temp = parseFloat(document.getElementById('temp').value);
-    const humidity = parseFloat(document.getElementById('humidity').value);
-    const wind = parseFloat(document.getElementById('wind').value);
+  const temp = document.getElementById("temp").value;
+  const humidity = document.getElementById("humidity").value;
+  const wind = document.getElementById("wind").value;
 
-    if (!temp || !humidity || !wind) {
-        alert("Please enter all values!");
-        return;
-    }
+  const response = await fetch("/predict", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      temp: Number(temp),
+      humidity: Number(humidity),
+      wind: Number(wind)
+    })
+  });
 
-    try {
-        const response = await fetch(`http://127.0.0.1:8000/predict?username=${username}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ temp, humidity, wind })
-        });
+  const data = await response.json();
 
-        if (!response.ok) {
-            const error = await response.json();
-            alert(error.detail || "Error predicting weather");
-            return;
-        }
+  if (!response.ok) {
+    alert(data.detail || "Prediction failed");
+    return;
+  }
 
-        const data = await response.json();
-        document.getElementById('result').innerText = 
-            `Predicted Temperature: ${data.predicted_temperature.toFixed(2)} °C`;
-
-    } catch (err) {
-        console.error(err);
-        alert("Error connecting to server");
-    }
+  document.getElementById("result").innerText =
+    `Predicted Temperature: ${data.predicted_temperature.toFixed(2)} °C`;
 }
+
+window.predictWeather = predictWeather;

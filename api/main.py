@@ -73,20 +73,17 @@ def login(user: Login, db: Session = Depends(get_db)):
 
 # --- Prediction ---
 @app.post("/predict")
-def predict(data: WeatherInput, username: str, db: Session = Depends(get_db)):
-    # Make prediction
+def predict(data: WeatherInput, db: Session = Depends(get_db)):
     result = model.predict([[data.temp, data.humidity, data.wind]])[0]
 
-    # Save prediction in DB
     record = Prediction(
-        username=username,
         temp=data.temp,
         humidity=data.humidity,
         wind=data.wind,
         result=float(result)
     )
+
     db.add(record)
     db.commit()
 
     return {"predicted_temperature": float(result)}
-
